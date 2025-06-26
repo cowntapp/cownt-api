@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 const rootRoutes = Router();
 
+// TODO: review when finished
+
 rootRoutes.get('/', (req, res) => {
   const availableRoutes = [
     // Health route
