@@ -10,9 +10,13 @@ import errorHandler from './middleware/errorHandler';
 import { OK } from './lib/constants/http';
 import rootRoutes from './root.routes';
 import cowRoutes from './features/animals/cow/router/cow.router';
+import sheepRoutes from './features/animals/sheep/router/sheep.router';
 import { seedCowsDynamic } from './scripts/seedAdvancedCows';
 import { Request, Response } from 'express';
 import { deleteAllCows } from './scripts/deleteAllCows';
+import { seedSheepsDynamic } from './scripts/seedAdvancedSheeps';
+import { deleteAllSheeps } from './scripts/deleteAllSheeps';
+import devRoutes from './features/_dev/router/dev.router';
 
 const app = express();
 
@@ -37,37 +41,6 @@ app.get('/health', (req, res) => {
   return;
 });
 
-app.post('/dev/seed-cows', async (req: Request, res: Response) => {
-  if (NODE_ENV !== 'development') {
-    res.status(403).json({ message: 'Forbidden outside development' });
-    return;
-  }
-  try {
-    await seedCowsDynamic();
-    res.status(200).json({ message: 'Cows seeded successfully' });
-    return;
-  } catch (err) {
-    res.status(500).json({ message: 'Error seeding cows', error: String(err) });
-    return;
-  }
-});
-
-app.delete('/dev/delete-cows', async (req: Request, res: Response) => {
-  if (NODE_ENV !== 'development') {
-    res.status(403).json({ message: 'Forbidden outside development' });
-    return;
-  }
-  try {
-    await deleteAllCows();
-    res.status(200).json({ message: 'Cows deleted successfully' });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: 'Error deleting cows', error: String(err) });
-    return;
-  }
-});
-
 // Public routes
 app.use('/auth', authRoutes);
 
@@ -78,7 +51,10 @@ app.use('/sessions', authenticate, sessionRoutes);
 // Animal routes (protected)
 app.use('/cows', authenticate, cowRoutes);
 // TODO: implement
-// app.use('/sheeps', authenticate, sheepRoutes);
+app.use('/sheeps', authenticate, sheepRoutes);
+
+// DB Seeding / Deleting
+app.use('/dev', devRoutes);
 
 // Root/index routes
 app.use('/', rootRoutes);

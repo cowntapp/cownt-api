@@ -1,13 +1,13 @@
-import CowModel, { Cow } from '../../model/cow.model';
+import SheepModel, { Sheep } from '../../model/sheep.model';
 import {
   checkBreedExistsById,
   checkCharacteristicExistsById,
-  checkCowExistsByLongCode,
+  checkSheepExistsByLongCode,
 } from '../utils/validations';
 
-import { CreateCowSchema } from '../../validation/cow.schemas';
+import { CreateSheepSchema } from '../../validation/sheep.schemas';
 import mongoose from 'mongoose';
-import { COW_SHORT_CODE_LAST_CHARS_NUM } from '../../consts';
+import { SHEEP_SHORT_CODE_LAST_CHARS_NUM } from '../../consts';
 import { ORIGIN } from '../../../animalsConsts';
 import appAssert from '../../../../../lib/utils/appAssert';
 import AppError from '../../../../../lib/utils/AppError';
@@ -18,16 +18,16 @@ import {
 } from '../../../../../lib/constants/http';
 import AppErrorCode from '../../../../../lib/constants/appErrorCode';
 
-export async function createCow(cowData: CreateCowSchema) {
-  const { longCode, breed, characteristics } = cowData;
+export async function createSheep(sheepData: CreateSheepSchema) {
+  const { longCode, breed, characteristics } = sheepData;
 
-  // Check if cow already exists
-  const cowExists = await checkCowExistsByLongCode(longCode);
+  // Check if sheep already exists
+  const sheepExists = await checkSheepExistsByLongCode(longCode);
   appAssert(
-    !cowExists,
+    !sheepExists,
     CONFLICT,
-    'Cow already exists',
-    AppErrorCode.CowAlreadyExists
+    'Sheep already exists',
+    AppErrorCode.SheepAlreadyExists
   );
 
   // Check if breed exists
@@ -55,9 +55,9 @@ export async function createCow(cowData: CreateCowSchema) {
     );
   }
 
-  const shortCode = longCode.slice(-COW_SHORT_CODE_LAST_CHARS_NUM);
-  const newCow = { ...cowData, shortCode };
-  let createdCow: Cow;
+  const shortCode = longCode.slice(-SHEEP_SHORT_CODE_LAST_CHARS_NUM);
+  const newSheep = { ...sheepData, shortCode };
+  let createdSheep: Sheep;
 
   /**
    * Animal could be bought or born
@@ -66,21 +66,21 @@ export async function createCow(cowData: CreateCowSchema) {
    *
    * if mother is passed, the child (current animal) must be added to it's children arrays
    */
-  if (!newCow.mother && newCow.origin === ORIGIN.BOUGHT) {
+  if (!newSheep.mother && newSheep.origin === ORIGIN.BOUGHT) {
     // if none is passed the animal we only create the animal document
-    createdCow = await CowModel.create(newCow);
-  } else if (newCow.mother && newCow.origin === ORIGIN.BORN) {
+    createdSheep = await SheepModel.create(newSheep);
+  } else if (newSheep.mother && newSheep.origin === ORIGIN.BORN) {
     // both are passed so must update father and mother documents
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      createdCow = await CowModel.create([newCow], { session })[0];
+      createdSheep = await SheepModel.create([newSheep], { session })[0];
 
       // updating mother births
-      await CowModel.updateMany(
-        { _id: newCow.mother },
-        { $push: { children: createdCow._id } }
+      await SheepModel.updateMany(
+        { _id: newSheep.mother },
+        { $push: { children: createdSheep._id } }
       ).session(session);
 
       await session.commitTransaction();
@@ -93,10 +93,10 @@ export async function createCow(cowData: CreateCowSchema) {
   } else {
     throw new AppError(
       INTERNAL_SERVER_ERROR,
-      'Invalid cow origin for mother relationship',
+      'Invalid sheep origin for mother relationship',
       AppErrorCode.InvalidOrigin
     );
   }
 
-  return createdCow;
+  return createdSheep;
 }

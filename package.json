@@ -5,7 +5,9 @@
   "type": "module",
   "module": "esnext",
   "scripts": {
-    "dev": "netlify dev"
+    "dev": "netlify dev",
+    "dev-seed:cows": "tsx --env-file=.env src/scripts/runSeedCows.ts",
+    "dev-seed:sheeps": "tsx --env-file=.env src/scripts/runSeedSheeps.ts"
   },
   "keywords": [],
   "author": "",
