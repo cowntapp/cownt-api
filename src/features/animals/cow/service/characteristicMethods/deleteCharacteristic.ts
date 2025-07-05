@@ -1,3 +1,5 @@
+import { CONFLICT, NOT_FOUND } from '../../../../../lib/constants/http';
+import appAssert from '../../../../../lib/utils/appAssert';
 import CowModel, {
   CowCharacteristic,
   CowCharacteristicModel,
@@ -10,21 +12,30 @@ export async function deleteCharacteristic(characteristicId: string) {
   session.startTransaction();
 
   try {
+    const cowsWithCharacteristic = await CowModel.find({
+      characteristics: characteristicId,
+    }).session(session);
+    appAssert(
+      cowsWithCharacteristic.length === 0,
+      CONFLICT,
+      `Existing cows with characteristic ${characteristicId}`
+    );
+
     const deletedCharacteristic: CowCharacteristic | null =
       await CowCharacteristicModel.findByIdAndDelete(characteristicId).session(
         session
       );
-    if (!deletedCharacteristic) {
-      await session.abortTransaction();
-      await session.endSession();
-      return null;
-    }
+    appAssert(
+      deletedCharacteristic !== null,
+      NOT_FOUND,
+      `Characteristic with id ${characteristicId} is not found`
+    );
 
     // find cows which have deletedCharacteristic in characteristics array and delete this characteristic from this array
-    await CowModel.updateMany(
-      { characteristics: characteristicId },
-      { $pull: { characteristics: characteristicId } }
-    ).session(session);
+    // await CowModel.updateMany(
+    //   { characteristics: characteristicId },
+    //   { $pull: { characteristics: characteristicId } }
+    // ).session(session);
 
     await session.commitTransaction();
     await session.endSession();
