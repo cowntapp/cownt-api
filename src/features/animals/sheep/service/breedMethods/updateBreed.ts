@@ -3,14 +3,15 @@ import appAssert from '../../../../../lib/utils/appAssert';
 import { SheepBreed, SheepBreedModel } from '../../model/sheep.model';
 
 import { UpdateBreedSchema } from '../../validation/sheep.schemas';
+import { checkBreedExistsByValue } from '../utils/validations';
 
 export async function updateBreed(
   breedId: string,
   breedData: UpdateBreedSchema
 ) {
-  const existingBreed = await SheepBreedModel.find({ value: breedData.value });
+  const existingBreed = await checkBreedExistsByValue(breedData.value);
   appAssert(
-    existingBreed.length === 0,
+    !existingBreed,
     CONFLICT,
     `Breed ${breedData.value} already exists`
   );
