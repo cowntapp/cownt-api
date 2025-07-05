@@ -37,7 +37,7 @@ export interface CowWithStatistics extends Cow {
 
 const cowSchema = new Schema<Cow>(
   {
-    longCode: { type: String, required: true },
+    longCode: { type: String, required: true, unique: true },
     shortCode: { type: String, required: true },
     breed: { type: Schema.ObjectId, ref: 'CowBreed', required: true },
     sex: { type: String, required: true },
@@ -69,7 +69,7 @@ export interface CowBreed extends Document {
 }
 const cowBreedSchema = new Schema<CowBreed>(
   {
-    value: { type: String, required: true },
+    value: { type: String, required: true, unique: true },
   },
   {
     toJSON: {
@@ -89,7 +89,7 @@ export interface CowCharacteristic extends Document {
 }
 const CowCharacteristicSchema = new Schema<CowCharacteristic>(
   {
-    value: { type: String, required: true },
+    value: { type: String, required: true, unique: true },
   },
   {
     toJSON: {
