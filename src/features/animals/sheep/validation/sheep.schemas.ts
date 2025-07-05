@@ -72,7 +72,7 @@ export const createBreedSchema = z.object({
   value: z.string().min(2).max(20),
 });
 export type UpdateBreedSchema = z.infer<typeof updateBreedSchema>;
-export const updateBreedSchema = createBreedSchema.partial();
+export const updateBreedSchema = createBreedSchema;
 
 // Characteristics Create/Update Schemas
 export type CreateCharacteristicSchema = z.infer<
@@ -84,4 +84,4 @@ export const createCharacteristicSchema = z.object({
 export type UpdateCharacteristicSchema = z.infer<
   typeof updateCharacteristicSchema
 >;
-export const updateCharacteristicSchema = createCharacteristicSchema.partial();
+export const updateCharacteristicSchema = createCharacteristicSchema;
