@@ -13,7 +13,7 @@ const enum TOKEN_KEYS {
   REFRESH_TOKEN_KEY = 'refreshToken',
 }
 
-const secure = process.env.NODE_ENV !== 'development';
+const secure = NODE_ENV !== 'development';
 const sameSite = NODE_ENV !== 'development' ? 'none' : 'lax';
 
 const defaults: CookieOptions = {

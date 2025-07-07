@@ -25,6 +25,7 @@ import {
   resetPasswordSchema,
   verificationCodeSchema,
 } from '../schemas/auth.schemas.js';
+import { APP_ORIGIN, NODE_ENV } from '../../../lib/constants/env.js';
 
 export const registerHandler = catchErrors(async (req, res) => {
   // validate request
@@ -87,6 +88,16 @@ export const logoutHandler = catchErrors(async (req, res) => {
 export const refreshHandler = catchErrors(async (req, res) => {
   // assert token
   const refreshToken = req.cookies.refreshToken as string | undefined;
+
+  const isProduction = NODE_ENV !== 'development';
+  const secure = isProduction;
+  const sameSite = isProduction ? 'none' : 'lax';
+
+  console.log('🍪 Incoming cookies:', req.cookies);
+  console.log('🌍 NODE_ENV:', NODE_ENV);
+  console.log('🌍 APP_ORIGIN:', APP_ORIGIN);
+  console.log('🔒 Cookie config:', { secure, sameSite });
+
   appAssert(
     refreshToken,
     UNAUTHORIZED,
@@ -95,8 +106,9 @@ export const refreshHandler = catchErrors(async (req, res) => {
   );
 
   // call service
-  const { accessToken, newRefreshToken } =
-    await refreshUserAccesssToken(refreshToken);
+  const { accessToken, newRefreshToken } = await refreshUserAccesssToken(
+    refreshToken
+  );
 
   // add both cookies if needed
   if (newRefreshToken) {
