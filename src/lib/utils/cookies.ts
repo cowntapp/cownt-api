@@ -83,9 +83,13 @@ export const setAccessCookie = ({
   accessToken,
   res,
 }: Omit<Params, TOKEN_KEYS.REFRESH_TOKEN_KEY>) => {
-  return res.cookie(
+  const result = res.cookie(
     TOKEN_KEYS.ACCESS_TOKEN_KEY,
     accessToken,
     getAccesssTokenCookieOptions()
   );
+
+  console.log('Response headers:', res.getHeaders());
+
+  return result;
 };
