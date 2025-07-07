@@ -23,7 +23,7 @@ export const PASSWORD_RESET_VERIFICATION_CODE_DURATION_HOURS = 1;
 export const SESSION_REFRESH_THRESHOLD_HOURS = 24;
 
 // Number of minutes an access token remains valid after being issued
-export const ACCESS_TOKEN_DURATION_MINUTES = 15;
+export const ACCESS_TOKEN_DURATION_MINUTES = 43200; // 30 days
 
 // Number of days a refresh token remains valid after being issued
 export const REFRESH_TOKEN_DURATION_DAYS = 30;
