@@ -75,13 +75,15 @@ export async function createCow(cowData: CreateCowSchema) {
     session.startTransaction();
 
     try {
-      createdCow = await CowModel.create([newCow], { session })[0];
+      createdCow = new CowModel(newCow);
 
       // updating mother births
       await CowModel.updateMany(
         { _id: newCow.mother },
-        { $push: { children: createdCow._id } }
+        { $push: { children: createdCow.id } }
       ).session(session);
+
+      await createdCow.save({ session });
 
       await session.commitTransaction();
       await session.endSession();

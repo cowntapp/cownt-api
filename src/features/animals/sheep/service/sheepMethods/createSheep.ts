@@ -75,13 +75,15 @@ export async function createSheep(sheepData: CreateSheepSchema) {
     session.startTransaction();
 
     try {
-      createdSheep = await SheepModel.create([newSheep], { session })[0];
+      createdSheep = new SheepModel(newSheep);
 
       // updating mother births
       await SheepModel.updateMany(
         { _id: newSheep.mother },
-        { $push: { children: createdSheep._id } }
+        { $push: { children: createdSheep.id } }
       ).session(session);
+
+      await createdSheep.save({ session });
 
       await session.commitTransaction();
       await session.endSession();
