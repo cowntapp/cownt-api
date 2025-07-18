@@ -22,6 +22,7 @@ export interface Cow extends Document {
 
   // status
   absence: ABSENCE | null;
+  absenceDetail: string | null;
 
   // tags
   characteristics: Types.ObjectId[];
@@ -47,6 +48,7 @@ const cowSchema = new Schema<Cow>(
     buyPrice: { type: Number, default: null },
     salePrice: { type: Number, default: null },
     absence: { type: String, default: null },
+    absenceDetail: { type: String, default: null },
     characteristics: [{ type: Schema.ObjectId, ref: 'CowCharacteristic' }],
     mother: { type: Schema.ObjectId, ref: 'Cow', default: null },
     children: [{ type: Schema.ObjectId, ref: 'Cow' }],

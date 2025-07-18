@@ -22,6 +22,7 @@ export interface Sheep extends Document {
 
   // status
   absence: ABSENCE | null;
+  absenceDetail: string | null;
 
   // tags
   characteristics: Types.ObjectId[];
@@ -47,6 +48,7 @@ const sheepSchema = new Schema<Sheep>(
     buyPrice: { type: Number, default: null },
     salePrice: { type: Number, default: null },
     absence: { type: String, default: null },
+    absenceDetail: { type: String, default: null },
     characteristics: [{ type: Schema.ObjectId, ref: 'SheepCharacteristic' }],
     mother: { type: Schema.ObjectId, ref: 'Sheep', default: null },
     children: [{ type: Schema.ObjectId, ref: 'Sheep' }],
