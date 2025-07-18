@@ -22,6 +22,7 @@ export const createCowSchema = z
       ),
     weight: z.string().min(1).max(10).optional(),
     origin: z.nativeEnum(ORIGIN),
+    owner: z.string(),
     buyPrice: z.number().nonnegative().int().optional(),
     salePrice: z.number().nonnegative().int().optional(),
     absence: z.nativeEnum(ABSENCE).nullable(),
@@ -61,6 +62,7 @@ export const createCowSchema = z
 export type UpdateCowSchema = z.infer<typeof updateCowSchema>;
 export const updateCowSchema = z.object({
   weight: z.string().min(1).max(10).nullable().optional(),
+  owner: z.string().optional(),
   buyPrice: z.number().nonnegative().int().nullable().optional(),
   salePrice: z.number().nonnegative().int().nullable().optional(),
   absence: z.nativeEnum(ABSENCE).nullable().optional(),

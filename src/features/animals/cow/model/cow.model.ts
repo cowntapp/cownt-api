@@ -15,6 +15,7 @@ export interface Cow extends Document {
   birthDate: string | null;
   weight: string | null;
   origin: ORIGIN;
+  owner: Types.ObjectId;
 
   // rev
   buyPrice: number | null;
@@ -45,6 +46,7 @@ const cowSchema = new Schema<Cow>(
     birthDate: { type: String, default: null },
     weight: { type: String, default: null },
     origin: { type: String, required: true },
+    owner: { type: Schema.ObjectId, ref: 'Owner', required: true },
     buyPrice: { type: Number, default: null },
     salePrice: { type: Number, default: null },
     absence: { type: String, default: null },

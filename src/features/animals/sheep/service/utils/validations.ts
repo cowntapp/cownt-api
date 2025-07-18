@@ -3,6 +3,7 @@ import SheepModel, {
   SheepBreedModel,
   SheepCharacteristicModel,
 } from '../../model/sheep.model';
+import { OwnerModel } from '../../../owner/model/owner.model';
 
 export async function checkSheepExistsById(id: string) {
   const isValid = Types.ObjectId.isValid(id);
@@ -39,4 +40,16 @@ export async function checkCharacteristicExistsById(id: string) {
 export async function checkCharacteristicExistsByValue(value: string) {
   const characteristic = await SheepCharacteristicModel.findOne({ value });
   return characteristic !== null;
+}
+
+export async function checkOwnerExistsById(id: string) {
+  if (!Types.ObjectId.isValid(id)) {
+    return false;
+  }
+  const owner = await OwnerModel.findById(id);
+  return owner !== null;
+}
+export async function checkOwnerExistsByValue(value: string) {
+  const owner = await OwnerModel.findOne({ value });
+  return owner !== null;
 }

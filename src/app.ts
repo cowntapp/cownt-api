@@ -11,6 +11,7 @@ import { OK } from './lib/constants/http';
 import rootRoutes from './root.routes';
 import cowRoutes from './features/animals/cow/router/cow.router';
 import sheepRoutes from './features/animals/sheep/router/sheep.router';
+import ownerRoutes from './features/animals/owner/router/owner.router';
 import { seedCowsDynamic } from './scripts/seedAdvancedCows';
 import { Request, Response } from 'express';
 import { deleteAllCows } from './scripts/deleteAllCows';
@@ -50,8 +51,9 @@ app.use('/sessions', authenticate, sessionRoutes);
 
 // Animal routes (protected)
 app.use('/cows', authenticate, cowRoutes);
-// TODO: implement
 app.use('/sheeps', authenticate, sheepRoutes);
+
+app.use('/owners', authenticate, ownerRoutes);
 
 // DB Seeding / Deleting
 app.use('/dev', devRoutes);
