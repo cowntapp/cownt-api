@@ -21,6 +21,7 @@ interface Cow {
   birthDate: string | null;
   weight: string | null;
   origin: ORIGIN;
+  owner: Types.ObjectId;
   buyPrice: number | null;
   salePrice: number | null;
   absence: ABSENCE | null;
@@ -49,6 +50,12 @@ const breedLlimosina = new Types.ObjectId('67dc0de2d58885ca877e6a07');
 const breedSalers = new Types.ObjectId('67dc0e65d58885ca877e6a08');
 const breedXarolesa = new Types.ObjectId('67dc0e73d58885ca877e6a09');
 const BREEDS = [breedCreuada, breedLlimosina, breedSalers, breedXarolesa];
+
+// IDs reales de propietarios disponibles
+const ownerJoan = new Types.ObjectId('687a61ae1347cfcfa1a62169');
+const ownerCinta = new Types.ObjectId('687a61b51347cfcfa1a6216c');
+const ownerGenis = new Types.ObjectId('687ba999e2881c72132c3364');
+const OWNERS = [ownerJoan, ownerCinta, ownerGenis];
 
 // ─── PARÁMETROS DE CONFIGURACIÓN ──────────────────────────────────────────────
 
@@ -95,6 +102,7 @@ export async function seedCowsDynamic() {
       ),
       weight: String(randomInt(MIN_WEIGHT, MAX_WEIGHT)),
       origin: ORIGIN.BOUGHT,
+      owner: pickRandom(OWNERS),
       buyPrice: randomInt(MIN_PRICE, MAX_PRICE),
       salePrice: null,
       // absence: pickRandom([null, ABSENCE.DEAD, ABSENCE.SOLD]),
@@ -148,6 +156,7 @@ export async function seedCowsDynamic() {
       birthDate: String(birthDate.getTime()),
       weight: String(randomInt(MIN_WEIGHT, MAX_WEIGHT)),
       origin: ORIGIN.BORN,
+      owner: mother.owner,
       buyPrice: null,
       salePrice: null,
       // absence: pickRandom([null, ABSENCE.DEAD, ABSENCE.SOLD]),
