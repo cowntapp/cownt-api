@@ -13,9 +13,11 @@ export interface Cow extends Document {
   breed: Types.ObjectId;
   sex: SEX;
   birthDate: string | null;
+  deathDate: string | null;
   weight: string | null;
   origin: ORIGIN;
   owner: Types.ObjectId;
+  details: string | null;
 
   // rev
   buyPrice: number | null;
@@ -44,9 +46,11 @@ const cowSchema = new Schema<Cow>(
     breed: { type: Schema.ObjectId, ref: 'CowBreed', required: true },
     sex: { type: String, required: true },
     birthDate: { type: String, default: null },
+    deathDate: { type: String, default: null },
     weight: { type: String, default: null },
     origin: { type: String, required: true },
     owner: { type: Schema.ObjectId, ref: 'Owner', required: true },
+    details: { type: String, default: null },
     buyPrice: { type: Number, default: null },
     salePrice: { type: Number, default: null },
     absence: { type: String, default: null },

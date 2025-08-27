@@ -20,9 +20,17 @@ export const createCowSchema = z
         (val) => val === undefined || validateDate(val),
         'birthDate must be a valid date timestamp in milliseconds'
       ),
+    deathDate: z
+      .string()
+      .optional()
+      .refine(
+        (val) => val === undefined || validateDate(val),
+        'deathDate must be a valid date timestamp in milliseconds'
+      ),
     weight: z.string().min(1).max(10).optional(),
     origin: z.nativeEnum(ORIGIN),
     owner: z.string(),
+    details: z.string().min(1).max(255).optional(),
     buyPrice: z.number().nonnegative().int().optional(),
     salePrice: z.number().nonnegative().int().optional(),
     absence: z.nativeEnum(ABSENCE).nullable(),
@@ -61,8 +69,17 @@ export const createCowSchema = z
 
 export type UpdateCowSchema = z.infer<typeof updateCowSchema>;
 export const updateCowSchema = z.object({
+  deathDate: z
+    .string()
+    .optional()
+    .nullable()
+    .refine(
+      (val) => val === undefined || val === null || validateDate(val),
+      'deathDate must be a valid date timestamp in milliseconds'
+    ),
   weight: z.string().min(1).max(10).nullable().optional(),
   owner: z.string().optional(),
+  details: z.string().min(1).max(255).optional(),
   buyPrice: z.number().nonnegative().int().nullable().optional(),
   salePrice: z.number().nonnegative().int().nullable().optional(),
   absence: z.nativeEnum(ABSENCE).nullable().optional(),
