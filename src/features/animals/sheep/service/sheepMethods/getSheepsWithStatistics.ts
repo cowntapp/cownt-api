@@ -24,7 +24,7 @@ type ExtendedSheep = SheepLeanDocWithChildren & {
 };
 
 export async function getSheepsWithStatistics(): Promise<{
-  sheeps: ExtendedSheep[];
+  animals: ExtendedSheep[];
   averageOfAverages: number | null;
 }> {
   // TODO: Afegir ovelles amb més de X dies de vida (diff entre today i dataNaix > X days) sense parts i avisar
@@ -104,5 +104,5 @@ export async function getSheepsWithStatistics(): Promise<{
   // ---------------------------------------------------------------
   const averageOfAverages = calculateOverallAverage(validAverages);
 
-  return { sheeps: results, averageOfAverages };
+  return { animals: results, averageOfAverages };
 }

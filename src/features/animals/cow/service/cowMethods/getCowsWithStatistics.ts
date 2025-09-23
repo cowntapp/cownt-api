@@ -24,7 +24,7 @@ type ExtendedCow = CowLeanDocWithChildren & {
 };
 
 export async function getCowsWithStatistics(): Promise<{
-  cows: ExtendedCow[];
+  animals: ExtendedCow[];
   averageOfAverages: number | null;
 }> {
   // TODO: Afegir vaques amb més de X dies de vida (diff entre today i dataNaix > X days) sense parts i avisar
@@ -104,5 +104,5 @@ export async function getCowsWithStatistics(): Promise<{
   // ---------------------------------------------------------------
   const averageOfAverages = calculateOverallAverage(validAverages);
 
-  return { cows: results, averageOfAverages };
+  return { animals: results, averageOfAverages };
 }
