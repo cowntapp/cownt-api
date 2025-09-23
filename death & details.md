@@ -21,5 +21,5 @@
   - [x] Add death & details edit
 - [ ] New Animal Form
   - [ ] Add death & detail input
-- [ ] Animals page (list)
-  - [ ] Add death & details columns
+- [x] Animals page (list)
+  - [x] Add death column
